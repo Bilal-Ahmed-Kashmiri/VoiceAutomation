@@ -1,4 +1,0 @@
-Navigation threw (likely SSL). Bypassing ➜ page.goto: Target page, context or browser has been closed
-Call log:
-  - navigating to "https://efcx4-voice.expertflow.com/unified-agent", waiting until "domcontentloaded"
-
