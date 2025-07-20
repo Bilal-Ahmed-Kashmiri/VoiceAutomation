@@ -1,0 +1,4 @@
+Navigation threw (likely SSL). Bypassing ➜ page.goto: net::ERR_CONNECTION_TIMED_OUT at https://efcx4-voice.expertflow.com/unified-agent
+Call log:
+  - navigating to "https://efcx4-voice.expertflow.com/unified-agent", waiting until "domcontentloaded"
+

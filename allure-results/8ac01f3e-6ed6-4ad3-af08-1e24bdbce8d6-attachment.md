@@ -1,0 +1,44 @@
+# Page snapshot
+
+```yaml
+- button "menu"
+- img "ExpertFlow"
+- button
+- button
+- button
+- button "Agent" [expanded]:
+  - img "Agent"
+- text: 00:01:16
+- img "No chat available"
+- paragraph: No New Conversation
+- button "Start a New Conversation"
+- menu:
+  - img "Agent"
+  - heading "bilal" [level=4]
+  - text: "(Ext: 1000028)"
+  - paragraph:
+    - text: State
+    - button "Ready"
+  - text: Change Channel Category State
+  - paragraph:
+    - text: CX VOICE(READY)
+    - switch [checked]
+  - paragraph:
+    - text: EMAIL(NOT_READY)
+    - switch
+  - paragraph:
+    - text: CHAT(NOT_READY)
+    - switch
+  - paragraph:
+    - text: CISCO CC(NOT_READY)
+    - switch
+  - paragraph:
+    - text: Selected Language
+    - button "English":
+      - img
+      - text: English
+  - paragraph:
+    - menuitem "Theme (Light or dark)"
+  - paragraph:
+    - menuitem "Logout" [disabled]
+```

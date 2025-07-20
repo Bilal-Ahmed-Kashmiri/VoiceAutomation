@@ -1,0 +1,48 @@
+# Page snapshot
+
+```yaml
+- button "menu"
+- img "ExpertFlow"
+- button
+- button
+- button
+- button "Agent":
+  - img "Agent"
+- text: 00:01:02
+- tablist:
+  - tab [selected]:
+    - img: BT
+- tabpanel "BT":
+  - heading "BT" [level=3]
+  - heading "Bilal Test" [level=5]:
+    - text: Bilal Test
+    - list
+  - list:
+    - listitem:
+      - button "Chat"
+    - listitem:
+      - button "Chat"
+  - list:
+    - listitem:
+      - button
+    - listitem:
+      - button "WrapUp":
+        - img "Note"
+    - listitem:
+      - button "Participants"
+    - listitem:
+      - button "Consult Chat"
+    - listitem:
+      - button
+  - img "customer"
+  - heading "Bilal Test 2208 00:18" [level=4]
+  - list:
+    - listitem
+    - listitem
+    - listitem
+    - listitem
+    - listitem
+  - button
+- button
+- button
+```
