@@ -224,6 +224,17 @@ if (await backdrop.first().isVisible().catch(() => false)) {
 
 }
 
+async function logoutAgent(page) {
+  await page.getByRole('button', { name: 'Agent' }).click();
+  await page.getByRole('button', { name: 'Ready' }).click();
+  await page.getByRole('menuitem', { name: 'Short Break' }).click();
+  await page.getByRole('menuitem', { name: 'Logout' }).click();
+  await page.getByRole('button', { name: 'Logout' }).click(); // Confirm logout
+  await page.waitForTimeout(2000);
+}
+
+
+
 /* ───────────────────────────────
    Serial end-to-end flow
 ──────────────────────────────── */
@@ -248,7 +259,10 @@ test.beforeAll(async ({ browser }) => {
   test.afterAll(async () => {
     await agentDesk?.close();
     await webphone?.close();
+    //await logoutAgent(agentDesk.page);
   });
+
+
 
   test('Agent Desk is logged in & MRD READY', async () => {
     await expect(agentDesk.page.getByText('CX VOICE(READY)')).toBeVisible();
@@ -389,15 +403,15 @@ test.beforeAll(async ({ browser }) => {
     test('Agent Desk verifies participants list', async () => { 
         await webphoneCallAndAgentAccept(webphone.page, agentDesk.page, SERVICE_IDENTIFIER);
         await verifyParticipantsList(agentDesk.page);
+        await agentDesk.page.locator('.cdk-overlay-backdrop').click();
         await endCallWithoutWrapUp(agentDesk.page);
     });
 
-    test('Agent logs out from Agent Desk', async () => {
-        await page.locator("//img[@alt='Agent']").click();
-        await page.locator("//span[@class='ellipsis']").click();
-        await page.locator("button.mat-menu-item:has-text('Short Break')").click();
-        await page.locator("//span[normalize-space()='Logout']").click();
-        await page.waitForTimeout(2000);
+    test('Agent logs out from Agent Desk', async () => { 
+        await webphoneCallAndAgentAccept(webphone.page, agentDesk.page, SERVICE_IDENTIFIER);
+        await endCallWithoutWrapUp(agentDesk.page);
+        await logoutAgent(agentDesk.page);
+        
 
     });
 

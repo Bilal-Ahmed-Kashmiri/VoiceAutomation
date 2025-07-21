@@ -1,0 +1,40 @@
+# Page snapshot
+
+```yaml
+- 'heading "Ext: 2208" [level=2]'
+- textbox "Enter number": "2888"
+- button "❌"
+- text: "Call Status : ACTIVE Number : 2888 Call Time : 00:28"
+- button ""
+- button ""
+- button ""
+- button ""
+- button "1"
+- button "2"
+- button "3"
+- button "4"
+- button "5"
+- button "6"
+- button "7"
+- button "8"
+- button "9"
+- button "*"
+- button "0"
+- button "#"
+- button ""
+- button "1"
+- button "2"
+- button "3"
+- button "4"
+- button "5"
+- button "6"
+- button "7"
+- button "8"
+- button "9"
+- button "*"
+- button "0"
+- button "#"
+- button "Logout"
+- heading "Log Viewer" [level=2]
+- checkbox
+```
