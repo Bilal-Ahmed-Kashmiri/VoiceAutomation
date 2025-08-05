@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../pages/LoginPage.js';
 import { WebphonePage } from '../../pages/WebphonePage.js';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 /* ───────────────────────────────
    🔐 Credentials & Endpoints
@@ -14,6 +17,8 @@ const WEBPHONE_DOMAIN = '192.168.1.17';
 const WEBPHONE_WSS    = 'wss://192.168.1.17:7443';
 
 const SERVICE_IDENTIFIER = process.env.IVR_DN || '6005'; 
+const IS_WRAP_UP_ENABLED = process.env.WRAP_UP_ENABLED !== 'false';
+
 
 /* ───────────────────────────────
    Permission helpers
@@ -75,7 +80,10 @@ async function endCallWithoutWrapUp(page) { //maximized view
   // Click the red "call_end" icon to end the call
   await page.getByText('call_end').click();
   // Confirm ending the call without applying any wrap-up
-  await page.locator("//span[normalize-space()='Leave Without Wrap-Up']").click();
+  
+  if (IS_WRAP_UP_ENABLED) {
+    await page.locator("//span[normalize-space()='Leave Without Wrap-Up']").click();
+  }
 }
 
 async function endCallFromMinimizedView(page) {
@@ -83,8 +91,9 @@ async function endCallFromMinimizedView(page) {
   await page.getByText('picture_in_picture_alt').click();
   // Click the red End-Call icon in that bar
   await page.getByRole('button').filter({ hasText: 'call_end' }).click();
-  await page.locator("//span[normalize-space()='Leave Without Wrap-Up']").click();
-
+  if (IS_WRAP_UP_ENABLED) {
+    await page.locator("//span[normalize-space()='Leave Without Wrap-Up']").click();
+  }
 }
 
 async function endCallFromWebphone(page) {
@@ -110,16 +119,17 @@ async function verifyWebPhoneIsReady(webphone) {
 }
 
 async function endCallByRefresh(page) {
-  // Refresh the page to end the call
   await page.reload();
-  await page.waitForTimeout(2000); // Wait for UI to settle
-  // Option 1: Direct wrap-up dialog
+  await page.waitForTimeout(2000);
+
+  if (!IS_WRAP_UP_ENABLED) return;
+
   const leaveWrapupBtn = page.getByRole('button', { name: 'Leave Without Wrap-Up' });
   if (await leaveWrapupBtn.isVisible().catch(() => false)) {
     await leaveWrapupBtn.click();
     return;
   }
-  // Option 2: Cross button → Confirm → Leave Without Wrap-Up
+
   const closeBtn = page.getByRole('button').filter({ hasText: 'close' });
   if (await closeBtn.isVisible().catch(() => false)) {
     await closeBtn.click();
@@ -130,9 +140,7 @@ async function endCallByRefresh(page) {
     if (await leaveWrapupBtn.isVisible().catch(() => false)) {
       await leaveWrapupBtn.click();
     }
-    return;
   }
-  // Option 3: Nothing appears – silently return
 }
 
 /** Clicks the 'Customer Interaction' button (question_answer icon) on Agent Desk. */
@@ -232,8 +240,6 @@ async function logoutAgent(page) {
   await page.getByRole('button', { name: 'Logout' }).click(); // Confirm logout
   await page.waitForTimeout(2000);
 }
-
-
 
 /* ───────────────────────────────
    Serial end-to-end flow
@@ -340,7 +346,9 @@ test.beforeAll(async ({ browser }) => {
         await webphoneCallAndAgentAccept(webphone.page, agentDesk.page, SERVICE_IDENTIFIER);
         await endCallFromWebphone(webphone.page);// End call from Customer
         //await agentDesk.page.locator('.cdk-overlay-backdrop').click();
+        if (IS_WRAP_UP_ENABLED) {
         await agentDesk.page.getByRole('button', { name: 'Leave Without Wrap-Up' }).click();
+}
 
 });
 
@@ -355,7 +363,9 @@ test.beforeAll(async ({ browser }) => {
         await expect(agentDesk.page.getByText('Call in progress, Are you')).toBeVisible();
         //await agentDesk.page.getByRole('button', { name: 'Confirm' }).click();
         await agentDesk.page.locator("//span[normalize-space()='Confirm']").click();
+        if (IS_WRAP_UP_ENABLED) {
         await agentDesk.page.getByRole('button', { name: 'Leave Without Wrap-Up' }).click();
+        }
     });
 
     //Mute and Unmute

@@ -13,5 +13,8 @@
     "@types/node": "^22.15.12",
     "allure-commandline": "^2.34.1",
     "allure-playwright": "^3.3.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1"
   }
 }
